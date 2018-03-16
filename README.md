@@ -11,7 +11,7 @@ Technologies used:
         
      - Java + Spring Framework (Spring boot)
      
-     - Git
+     - Git (github + sourceTree)
      
      - Tomcat as embedded server
      
@@ -22,7 +22,7 @@ Technologies used:
 
      - Advanced rest client plugin for testing
      
-     - Docker (WebApp + Sonar)
+     - Docker (Challenge + Sonar)
      
      - Jacoco + Sonar for code coverage
         * http://localhost:9001/dashboard/index/com.challenge:challenge
