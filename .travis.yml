@@ -1,0 +1,31 @@
+sudo: required
+language: java
+
+services:
+  - docker
+
+jobs:
+  include:
+    - stage: build maven jar
+      script:
+      - mvn clean package
+    - stage: build and push docker image
+      script:
+      - docker login -u="$DOCKER_USERNAME" -p="$DOCKER_PASSWORD"
+      - docker build -t jcarretero/challenge .
+      - docker images
+      - docker push jcarretero/challenge
+    - stage: run compose
+      script:
+      - export MY_IP=`ifconfig eth0 | grep "inet addr" | cut -d ':' -f 2 | cut -d ' ' -f 1`
+      - docker swarm init
+      - docker stack deploy -c docker-compose.yml demo
+      - sleep 180 && docker service ps --no-trunc demo_challenge
+      - echo $MY_IP
+      - curl http://$MY_IP:8080/actuator/health || exit 1
+      # Testing endpoint getHorses (expecting 3 horses)
+      - curl http://$MY_IP:8080/getHorses
+      # Adding new horse
+      - curl -d '{"name":"Horse4","jockey":"Jockey4","trainer":"Trainer4"}' -X POST http://$MY_IP:8080/createHorse -H "Content-Type:application/json"
+      # Getting the new horse
+      - curl http://$MY_IP:8080/getHorse/4
