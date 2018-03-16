@@ -1,0 +1,31 @@
+sudo: enabled
+language: java
+
+services:
+  - docker
+
+before_script:
+#  - docker login -e="$DOCKER_EMAIL" -u="$DOCKER_USERNAME" -p="$DOCKER_PASSWORD";
+  - docker login -u jcarretero -p Password12
+#  - docker login -u "$DOCKER_USERNAME" -p "$DOCKER_PASSWORD"
+
+script:
+
+  # Docker build and deploy
+  - echo 'Building the jar ...'
+  - mvn clean test package
+  - echo 'Building docker image ...'
+  - docker build -t challenge .
+  - echo 'Pushing docker image ...'
+  - docker push jcarretero/repo:challenge
+
+#  - echo 'Init swarm'
+#  - docker swarm init
+#  - echo 'Starting stack up ...'
+#  - docker stack deploy -c docker-compose.yml demo
+
+#  - sleep 10
+
+  # Publish to sonar
+#  - echo 'Publishing test to sonar ...'
+#  - mvn sonar:sonar -Dsonar.host.url=http://127.0.0.1:9001
