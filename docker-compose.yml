@@ -8,6 +8,6 @@ services:
       - "9092:9092"
 
   challenge:
-    image: challenge:latest
+    image: jcarretero/challenge:latest
     ports:
       - "8080:8080"

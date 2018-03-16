@@ -3,7 +3,7 @@ echo 'Building the jar ...'
 mvn clean test package
 
 echo 'Building docker image ...'
-docker build -t challenge .
+docker build -t jcarretero/challenge .
 
 echo 'Starting stack up ...'
 docker stack deploy -c docker-compose.yml demo
